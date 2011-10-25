@@ -13,7 +13,7 @@ if ( isset( $_POST[ 'field' ] ) )
         // ...
         $result = 'CSRF check passed. Form parsed.';
     }
-    catch ( \Exception $e )
+    catch ( Exception $e )
     {
         // CSRF attack detected
         $result = $e->getMessage() . ' Form ignored.';
