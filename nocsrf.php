@@ -18,9 +18,10 @@ class NoCSRF
      * @param Mixed $origin The object/associative array to retreive the token data from (usually $_POST).
      * @param Boolean $throwException (Facultative) TRUE to throw exception on check fail, FALSE or default to return false.
      * @param Integer $timespan (Facultative) Makes the token expire after $timespan seconds. (null = never)
+	 * @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
      * @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
      */
-    public static function check( $key, $origin, $throwException=false, $timespan=null )
+    public static function check( $key, $origin, $throwException=false, $timespan=null, $multiple=false )
     {
         if ( !isset( $_SESSION[ 'csrf_' . $key ] ) )
             if($throwException)
@@ -36,8 +37,10 @@ class NoCSRF
 
         // Get valid token from session
         $hash = $_SESSION[ 'csrf_' . $key ];
+		
         // Free up session token for one-time CSRF token usage.
-        $_SESSION[ 'csrf_' . $key ] = null;
+		if(!$multiple)
+			$_SESSION[ 'csrf_' . $key ] = null;
         
         // Check if session token matches form token
         if ( $origin[ $key ] != $hash )

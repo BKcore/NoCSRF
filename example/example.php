@@ -7,8 +7,8 @@ if ( isset( $_POST[ 'field' ] ) )
 {
     try
     {
-        // Run CSRF check, on POST data, in exception mode, for 10 minutes
-        NoCSRF::check( 'csrf_token', $_POST, true, 60*10 );
+        // Run CSRF check, on POST data, in exception mode, for 10 minutes, in one-time mode.
+        NoCSRF::check( 'csrf_token', $_POST, true, 60*10, false );
         // form parsing, DB inserts, etc.
         // ...
         $result = 'CSRF check passed. Form parsed.';
