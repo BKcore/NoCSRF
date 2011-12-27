@@ -101,7 +101,7 @@ class NoCSRF
         $seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
         $max = strlen( $seed ) - 1;
         // help mt_rand() with a stronger seed
-								srand( ( double ) microtime( microtime() ) * 100000 );
+        srand( ( double ) microtime( microtime() ) * 100000 );
         $string = '';
         for ( $i = 0; $i < $length; ++$i )
             $string .= $seed{intval( mt_rand( 0.0, $max ) )};
