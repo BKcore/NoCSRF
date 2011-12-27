@@ -11,14 +11,14 @@
 class NoCSRF
 {
     /**
-     * Check CSRF tokens match between session and $origin. 
+     * Check CSRF tokens match between session and $origin.
      * Make sure you generated a token in the form before checking it.
      *
      * @param String $key The session and $origin key where to find the token.
      * @param Mixed $origin The object/associative array to retreive the token data from (usually $_POST).
      * @param Boolean $throwException (Facultative) TRUE to throw exception on check fail, FALSE or default to return false.
      * @param Integer $timespan (Facultative) Makes the token expire after $timespan seconds. (null = never)
-	 * @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
+				 * @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
      * @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
      */
     public static function check( $key, $origin, $throwException=false, $timespan=null, $multiple=false )
@@ -28,7 +28,7 @@ class NoCSRF
                 throw new Exception( 'Missing CSRF session token.' );
             else
                 return false;
-            
+
         if ( !isset( $origin[ $key ] ) )
             if($throwException)
                 throw new Exception( 'Missing CSRF form token.' );
@@ -37,11 +37,11 @@ class NoCSRF
 
         // Get valid token from session
         $hash = $_SESSION[ 'csrf_' . $key ];
-		
+
         // Free up session token for one-time CSRF token usage.
 		if(!$multiple)
 			$_SESSION[ 'csrf_' . $key ] = null;
-        
+
         // Check if session token matches form token
         if ( $origin[ $key ] != $hash )
             if($throwException)
@@ -56,6 +56,21 @@ class NoCSRF
             else
                 return false;
 
+        // check for remote address
+        if (strcmp( sha1( $_SERVER['REMOTE_ADDR']), substr( base64_decode( $hash ), 10, 40 ) ) !== 0) {
+            if($throwException)
+                throw new Exception( 'CSRF token contains invalid remote address.' );
+            else
+                return false;
+        }
+
+        // check for remote browser agent
+        if (strcmp( sha1( $_SERVER['HTTP_USER_AGENT']), substr( base64_decode( $hash ), 50, 40 ) ) !== 0) {
+            if($throwException)
+                throw new Exception( 'CSRF token contains invalid browser agent.' );
+            else
+                return false;
+        }
         return true;
     }
 
@@ -67,8 +82,8 @@ class NoCSRF
      */
     public static function generate( $key )
     {
-        // token generation (basically base64_encode any random complex string, time() is used for token expiration) 
-        $token = base64_encode( time() . self::randomString( 32 ) );
+        // token generation (basically base64_encode any random complex string, time() is used for token expiration)
+        $token = base64_encode( time() . sha1( $_SERVER['REMOTE_ADDR'] ) . sha1( $_SERVER['HTTP_USER_AGENT'] ) . self::randomString( 32 ) );
         // store the one-time token in session
         $_SESSION[ 'csrf_' . $key ] = $token;
 
