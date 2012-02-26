@@ -47,7 +47,7 @@ class NoCSRF
 			$_SESSION[ 'csrf_' . $key ] = null;
 
         // Origin checks
-        if( self::$doOriginCheck && sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) != substr( base64_decode( $hash ), 10, 40 ) ) )
+        if( self::$doOriginCheck && sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) != substr( base64_decode( $hash ), 10, 40 ) )
         {
             if($throwException)
                 throw new Exception( 'Form origin does not match token origin.' );
