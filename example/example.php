@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include('nocsrf.php');
+include('../nocsrf.php');
 
 if ( isset( $_POST[ 'field' ] ) )
 {
