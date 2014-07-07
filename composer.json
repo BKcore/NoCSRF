@@ -1,14 +1,14 @@
 {
-    "name": "bkcore/nocsrf",
-    "description": "A simple anti-CSRF token generation/checking class written in PHP5.",
-    "homepage": "http://bkcore.com/blog/code/nocsrf-php-class.html",
-    "license": "MIT",
-    "version": "1.0.0",
-    "type": "library",
-    "require": {
-        "php": ">=5.3.2"
-    },
-    "autoload": {
-        "classmap": [""]
-    }
+	"name": "bkcore/nocsrf",
+	"description": "A simple anti-CSRF token generation/checking class written in PHP5.",
+	"homepage": "http://bkcore.com/blog/code/nocsrf-php-class.html",
+	"license": "MIT",
+	"version": "1.0.0",
+	"type": "library",
+	"require": {
+		"php": ">=5.3.2"
+	},
+	"autoload": {
+		"classmap": [""]
+	}
 }
