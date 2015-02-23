@@ -77,7 +77,7 @@ class nocsrf
 			}
 		}
 		// Check for token expiration
-		if ( $timespan != null && is_int( $timespan ) && intval( substr( base64_decode( $hash ), 0, 10 ) ) + $timespan < time() ){
+		if ( $timespan !== null && is_int( $timespan ) && intval( substr( base64_decode( $hash ), 0, 10 ) ) + $timespan < time() ){
 			if($throwException){
 				throw new Exception( 'CSRF token has expired.' );
 			}
