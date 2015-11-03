@@ -9,7 +9,7 @@ if ( isset( $_POST[ 'field' ] ) )
 	try
 	{
 		// Run CSRF check, on POST data, in exception mode, for 10 minutes, in one-time mode.
-		$csfr->check( 'csrf_token', $_POST, true, 60*10, false );
+		$csfr->check( 'csrf_token', $_POST, true, 60*10, true );
 		// form parsing, DB inserts, etc.
 		// ...
 		$result = 'CSRF check passed. Form parsed.';
