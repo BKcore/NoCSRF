@@ -20,7 +20,7 @@ if ( isset( $_POST[ 'field' ] ) )
 		$result = $e->getMessage() . ' Form ignored.';
 	}
 
-	//funtional
+	//functional
 	if(!$csfr->check( 'csrf_token', $_POST, false, null, true )){
 		echo 'NOPE';
 	}
@@ -44,12 +44,14 @@ $token = $csfr->generate( 'csrf_token' );
 <form name="csrf_form" action="" method="post">
 	<h2>Form using generated token.</h2>
 	<input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
-	<input type="text" name="field" value="somevalue">
+	<label for="one">Something</label>
+	<input type="text" id="one" name="field" value="somevalue">
 	<input type="submit" value="Send form">
 </form>
 <form name="nocsrf_form" action="" method="post">
 	<h2>Copied form simulating CSRF attack.</h2>
 	<input type="hidden" name="csrf_token" value="whateverkey">
-	<input type="text" name="field" value="somevalue">
+	<label for="two">Something</label>
+	<input type="text" id="two" name="field" value="somevalue">
 	<input type="submit" value="Send form">
 </form>
