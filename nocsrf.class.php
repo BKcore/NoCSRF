@@ -20,7 +20,7 @@ class nocsrf
 	* Make sure you generated a token in the form before checking it.
 	*
 	* @param String $key The session and $origin key where to find the token.
-	* @param Mixed $origin The object/associative array to retreive the token data from (usually $_POST).
+	* @param Mixed $origin The object/associative array to retrieve the token data from (usually $_POST).
 	* @param Boolean $throwException (optional) TRUE to throw exception on check fail, FALSE or default to return false.
 	* @param Integer $time_span (optional) Makes the token expire after $time_span seconds. (null = never)
 	* @param Boolean $multiple (optional) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
@@ -91,7 +91,7 @@ class nocsrf
 	}
 
 	/**
-	* Adds extra useragent and remote_addr checks to CSRF protections.
+	* Adds extra user agent and remote_address checks to CSRF protections.
 	*/
 	public function enable_origin_check(){
 		$this->do_origin_check = true;
