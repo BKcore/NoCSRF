@@ -20,15 +20,15 @@ class nocsrf
 	* Make sure you generated a token in the form before checking it.
 	*
 	* @param String $key The session and $origin key where to find the token.
-	* @param Mixed $origin The object/associative array to retreive the token data from (usually $_POST).
-	* @param Boolean $throwException (Facultative) TRUE to throw exception on check fail, FALSE or default to return false.
-	* @param Integer $timespan (Facultative) Makes the token expire after $timespan seconds. (null = never)
-	* @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
+	* @param Mixed $origin The object/associative array to retrieve the token data from (usually $_POST).
+	* @param Boolean $throwException (optional) TRUE to throw exception on check fail, FALSE or default to return false.
+	* @param Integer $time_span (optional) Makes the token expire after $time_span seconds. (null = never)
+	* @param Boolean $multiple (optional) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
 	*
 	* @throws Exception
 	* @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
 	*/
-	public function check( $key, $origin, $throwException=false, $timespan=null, $multiple=false ){
+	public function check( $key, $origin, $throwException=false, $time_span=null, $multiple=false ){
 
 		if ( !isset( $_SESSION[ 'csrf_' . $key ] ) ){
 			if($throwException){
@@ -78,7 +78,7 @@ class nocsrf
 			}
 		}
 		// Check for token expiration
-		if ( $timespan !== null && is_int( $timespan ) && intval( substr( base64_decode( $hash ), 0, 10 ) ) + $timespan < time() ){
+		if ( $time_span !== null && is_int( $time_span ) && intval( substr( base64_decode( $hash ), 0, 10 ) ) + $time_span < time() ){
 			if($throwException){
 				throw new Exception( 'CSRF token has expired.' );
 			}
@@ -91,7 +91,7 @@ class nocsrf
 	}
 
 	/**
-	* Adds extra useragent and remote_addr checks to CSRF protections.
+	* Adds extra user agent and remote_address checks to CSRF protections.
 	*/
 	public function enable_origin_check(){
 		$this->do_origin_check = true;
