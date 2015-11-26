@@ -25,6 +25,7 @@ class nocsrf
 	* @param Integer $timespan (Facultative) Makes the token expire after $timespan seconds. (null = never)
 	* @param Boolean $multiple (Facultative) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
 	*
+	* @throws Exception
 	* @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
 	*/
 	public function check( $key, $origin, $throwException=false, $timespan=null, $multiple=false ){
