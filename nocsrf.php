@@ -3,10 +3,13 @@
  * NoCSRF, an anti CSRF token generation/checking class.
  *
  * Copyright (c) 2011 Thibaut Despoulain <http://bkcore.com/blog/code/nocsrf-php-class.html>
+ * Copyright (c) 2016 Emanuele Cipolla <http://emanuelecipolla.net/>
+ *
  * Licensed under the MIT license <http://www.opensource.org/licenses/mit-license.php>
  *
  * @author Thibaut Despoulain <http://bkcore.com>
- * @version 1.0
+ * @author Emanuele Cipolla <http://emanuelecipolla.net/>
+ * @version 1.0.1
  */
 require __DIR__ . '/vendor/autoload.php';
 
