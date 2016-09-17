@@ -3,11 +3,16 @@
  * NoCSRF, an anti CSRF token generation/checking class.
  *
  * Copyright (c) 2011 Thibaut Despoulain <http://bkcore.com/blog/code/nocsrf-php-class.html>
+ * Copyright (c) 2016 Emanuele Cipolla <http://emanuelecipolla.net/>
+ *
  * Licensed under the MIT license <http://www.opensource.org/licenses/mit-license.php>
  *
  * @author Thibaut Despoulain <http://bkcore.com>
- * @version 1.0
+ * @author Emanuele Cipolla <http://emanuelecipolla.net/>
+ * @version 1.0.1
  */
+require __DIR__ . '/vendor/autoload.php';
+
 class NoCSRF
 {
 
@@ -90,29 +95,11 @@ class NoCSRF
     {
         $extra = self::$doOriginCheck ? sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) : '';
         // token generation (basically base64_encode any random complex string, time() is used for token expiration) 
-        $token = base64_encode( time() . $extra . self::randomString( 32 ) );
+        $token = base64_encode( time() . $extra . bin2hex(random_bytes( 32 )  ));
         // store the one-time token in session
         $_SESSION[ 'csrf_' . $key ] = $token;
 
         return $token;
-    }
-
-    /**
-     * Generates a random string of given $length.
-     *
-     * @param Integer $length The string length.
-     * @return String The randomly generated string.
-     */
-    protected static function randomString( $length )
-    {
-        $seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
-        $max = strlen( $seed ) - 1;
-
-        $string = '';
-        for ( $i = 0; $i < $length; ++$i )
-            $string .= $seed{intval( mt_rand( 0.0, $max ) )};
-
-        return $string;
     }
 
 }
