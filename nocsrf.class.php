@@ -8,7 +8,7 @@
 * @author Thibaut Despoulain <http://bkcore.com>
 * @version 1.0
 * @author Mario Brandt
-* @version 1.1
+* @version 1.2
 */
 class nocsrf
 {
@@ -57,7 +57,7 @@ class nocsrf
 			$_SESSION[ 'csrf_' . $key ] = null;
 		}
 		// Origin checks
-		if( $this->do_origin_check && sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) != substr( base64_decode( $hash ), 10, 40 ) ){
+		if( $this->do_origin_check && hash('SHA256' ,$_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] ) != substr( base64_decode( $hash ), 10, 40 ) ){
 			if($throwException){
 				throw new Exception( 'Form origin does not match token origin.' );
 			}
@@ -105,7 +105,7 @@ class nocsrf
 	*/
 	public function generate( $key ){
 		if($this->do_origin_check === true){
-			$extra = sha1( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] );
+			$extra = hash('SHA256' ,$_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] );
 		}
 		else
 		{
