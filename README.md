@@ -1,4 +1,4 @@
-#NoCSRF, a simple PHP5 token class to prevent CSRF attacks.
+# NoCSRF, a simple PHP5 token class to prevent CSRF attacks.
 
 * [Website](http://bkcore.com/blog/code/nocsrf-php-class.html)
 * Author: Thibaut Despoulain
