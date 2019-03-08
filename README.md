@@ -4,5 +4,5 @@
 
 * Author: Thibaut Despoulain
 * Author: Mario
-* Version: 1.3
+* Version: [![Latest Version](https://img.shields.io/github/release/JBlond/NoCSRF.svg?style=flat-square&label=Release)](https://github.com/JBlond/NoCSRF/releases)
 * Licensed under the MIT license <http://www.opensource.org/licenses/mit-license.php>

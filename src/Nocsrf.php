@@ -10,7 +10,7 @@ namespace jblond;
  * @author Thibaut Despoulain <http://bkcore.com>
  * @version 1.0
  * @author Mario Brandt
- * @version 1.3
+ * @version 1.4
  */
 class Nocsrf
 {
