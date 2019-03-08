@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../src/nocsrf.class.php';
+require '../src/Nocsrf.php';
 $csfr = new jblond\Nocsrf;
 
 if ( isset( $_POST[ 'field' ] ) )
