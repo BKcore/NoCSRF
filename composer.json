@@ -1,0 +1,27 @@
+{
+    "name": "jblond/nocsrf",
+    "type": "library",
+    "description": "NoCSRF is a simple anti-CSRF token generation/checking class written in PHP. ",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "csrf"
+    ],
+    "authors": [
+        {
+            "name": "Mario",
+            "email": "leet31337@web.de"
+        }
+    ],
+    "require": {
+        "php" : ">= 7.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+           "jblond\\": "src"
+        }
+    }
+}
