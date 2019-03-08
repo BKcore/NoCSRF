@@ -15,6 +15,9 @@ namespace jblond;
 class Nocsrf
 {
 
+    /**
+     * @var bool $do_origin_check
+     */
     protected $do_origin_check = false;
 
     /**
@@ -34,19 +37,11 @@ class Nocsrf
     {
 
         if (!isset($_SESSION['csrf_' . $key])) {
-            if ($throwException) {
-                throw new \Exception('Missing CSRF session token.');
-            } else {
-                return false;
-            }
+            return $this->returnOrException($throwException, 'Missing CSRF session token.');
         }
 
         if (!isset($origin[$key])) {
-            if ($throwException) {
-                throw new \Exception('Missing CSRF form token.');
-            } else {
-                return false;
-            }
+            return $this->returnOrException($throwException, 'Missing CSRF form token.');
         }
         // Get valid token from session
         $hash = $_SESSION['csrf_' . $key];
@@ -58,35 +53,37 @@ class Nocsrf
         // Origin checks
         if ($this->do_origin_check && hash('SHA256', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'])
             != substr(base64_decode($hash), 10, 40)) {
-            if ($throwException) {
-                throw new \Exception('Form origin does not match token origin.');
-            } else {
-                return false;
-            }
+            return $this->returnOrException($throwException, 'Form origin does not match token origin.');
         }
 
         // Check if session token matches form token
         if ($origin[$key] != $hash) {
-            if ($throwException) {
-                throw new \Exception('Invalid CSRF token.');
-            } else {
-                return false;
-            }
+            return $this->returnOrException($throwException, 'Invalid CSRF token.');
         }
         // Check for token expiration
         if ($time_span !== null &&
             is_int($time_span) &&
             intval(substr(base64_decode($hash), 0, 10)) + $time_span < time()
         ) {
-            if ($throwException) {
-                throw new \Exception('CSRF token has expired.');
-            } else {
-                return false;
-            }
+            return $this->returnOrException($throwException, 'CSRF token has expired.');
+
         }
         return true;
     }
 
+    /**
+     * @param bool $throwException
+     * @param string $exceptionString
+     * @return bool
+     * @throws \Exception
+     */
+    private function returnOrException(bool $throwException, string $exceptionString){
+        if ($throwException) {
+            throw new \Exception($exceptionString);
+        } else {
+            return false;
+        }
+    }
     /**
      * Adds extra user agent and remote_address checks to CSRF protections.
      */
