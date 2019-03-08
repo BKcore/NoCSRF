@@ -1,7 +1,7 @@
 <?php
 session_start();
 require '../src/nocsrf.class.php';
-$csfr = new nocsrf;
+$csfr = new jblond\Nocsrf;
 
 if ( isset( $_POST[ 'field' ] ) )
 {
