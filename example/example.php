@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../nocsrf.class.php';
+require '../src/nocsrf.class.php';
 $csfr = new nocsrf;
 
 if ( isset( $_POST[ 'field' ] ) )
