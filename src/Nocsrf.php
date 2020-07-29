@@ -4,13 +4,9 @@ namespace jblond;
 /**
  * NoCSRF, an anti CSRF token generation/checking class.
  *
- * Copyright (c) 2011 Thibaut Despoulain <http://bkcore.com/blog/code/nocsrf-php-class.html>
- * Licensed under the MIT license <http://www.opensource.org/licenses/mit-license.php>
- *
  * @author Thibaut Despoulain <http://bkcore.com>
- * @version 1.0
  * @author Mario Brandt
- * @version 1.4
+ * @version 1.5
  */
 class Nocsrf
 {
@@ -66,7 +62,6 @@ class Nocsrf
             intval(substr(base64_decode($hash), 0, 10)) + $time_span < time()
         ) {
             return $this->returnOrException($throwException, 'CSRF token has expired.');
-
         }
         return true;
     }
@@ -80,9 +75,8 @@ class Nocsrf
     private function returnOrException(bool $throwException, string $exceptionString){
         if ($throwException) {
             throw new \Exception($exceptionString);
-        } else {
-            return false;
         }
+        return false;
     }
     /**
      * Adds extra user agent and remote_address checks to CSRF protections.
@@ -101,11 +95,11 @@ class Nocsrf
      */
     public function generate(string $key): string
     {
+        $extra = '';
         if ($this->do_origin_check === true) {
             $extra = hash('SHA256', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
-        } else {
-            $extra = '';
         }
+
         // token generation (basically base64_encode any random complex string, time() is used for token expiration)
         $token = base64_encode(time() . $extra . $this->randomString(32));
         // store the one-time token in session
