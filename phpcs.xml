@@ -2,6 +2,6 @@
 <!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <ruleset name="Nocsrf">
 	<description>Nocsrf</description>
-	<rule ref="PSR2">
+	<rule ref="PSR12">
 	</rule>
 </ruleset>

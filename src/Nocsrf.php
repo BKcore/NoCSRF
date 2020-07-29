@@ -1,4 +1,5 @@
 <?php
+
 namespace jblond;
 
 use Exception;
@@ -52,9 +53,10 @@ class Nocsrf
         if (
             $this->do_origin_check &&
             hash(
-                'SHA256', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']
-            ) != substr(base64_decode($hash), 10, 40))
-        {
+                'SHA256',
+                $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']
+            ) != substr(base64_decode($hash), 10, 40)
+        ) {
             return $this->returnOrException($throwException, 'Form origin does not match token origin.');
         }
 
@@ -79,7 +81,8 @@ class Nocsrf
      * @return bool
      * @throws Exception
      */
-    private function returnOrException(bool $throwException, string $exceptionString){
+    private function returnOrException(bool $throwException, string $exceptionString): bool
+    {
         if ($throwException) {
             throw new Exception($exceptionString);
         }
