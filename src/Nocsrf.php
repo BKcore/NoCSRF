@@ -1,6 +1,8 @@
 <?php
 namespace jblond;
 
+use Exception;
+
 /**
  * NoCSRF, an anti CSRF token generation/checking class.
  *
@@ -26,7 +28,7 @@ class Nocsrf
      * @param Integer $time_span (optional) Makes the token expire after $time_span seconds. (null = never)
      * @param Boolean $multiple (optional) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
      *
-     * @throws \Exception
+     * @throws Exception
      * @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
      */
     public function check($key, $origin, $throwException = false, $time_span = null, $multiple = false)
@@ -70,11 +72,11 @@ class Nocsrf
      * @param bool $throwException
      * @param string $exceptionString
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     private function returnOrException(bool $throwException, string $exceptionString){
         if ($throwException) {
-            throw new \Exception($exceptionString);
+            throw new Exception($exceptionString);
         }
         return false;
     }
