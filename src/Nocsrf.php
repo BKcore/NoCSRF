@@ -49,8 +49,12 @@ class Nocsrf
             $_SESSION['csrf_' . $key] = null;
         }
         // Origin checks
-        if ($this->do_origin_check && hash('SHA256', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'])
-            != substr(base64_decode($hash), 10, 40)) {
+        if (
+            $this->do_origin_check &&
+            hash(
+                'SHA256', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']
+            ) != substr(base64_decode($hash), 10, 40))
+        {
             return $this->returnOrException($throwException, 'Form origin does not match token origin.');
         }
 
@@ -59,7 +63,8 @@ class Nocsrf
             return $this->returnOrException($throwException, 'Invalid CSRF token.');
         }
         // Check for token expiration
-        if ($time_span !== null &&
+        if (
+            $time_span !== null &&
             is_int($time_span) &&
             intval(substr(base64_decode($hash), 0, 10)) + $time_span < time()
         ) {
