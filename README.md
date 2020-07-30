@@ -6,3 +6,21 @@
 * Author: Mario
 * Version: [![Latest Version](https://img.shields.io/github/release/JBlond/NoCSRF.svg?style=flat-square&label=Release)](https://github.com/JBlond/NoCSRF/releases)
 * Licensed under the [MIT license](LICENSE.md)
+
+## Usage 
+
+For usage see the example/exmaple.php
+
+## Public functions
+
+- check
+- enableOriginCheck
+- generate
+
+```PHP
+<?php
+$csfr = new jblond\Nocsrf;
+$csfr->check('csrf_token', $_POST, $throwException = false, $time_span = null, $multiple = false);
+$csfr->enableOriginCheck(); // optional
+$csfr->generate( 'csrf_token' );
+```
