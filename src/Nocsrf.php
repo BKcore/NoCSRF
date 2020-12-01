@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jblond;
 
 use Exception;
@@ -29,17 +31,21 @@ class Nocsrf
      * Make sure you generated a token in the form before checking it.
      *
      * @param string $key The session and $origin key where to find the token.
-     * @param mixed $origin The object/associative array to retrieve the token data from (usually $_POST).
+     * @param array $origin The object/associative array to retrieve the token data from (usually $_POST).
      * @param bool $throwException (optional) TRUE to throw exception on check fail, FALSE or default to return false
-     * @param Integer|null $time_span (optional) Makes the token expire after $time_span seconds. (null = never)
+     * @param int|null $time_span (optional) Makes the token expire after $time_span seconds. (null = never)
      * @param bool $multiple (optional) Makes the token reusable and not one-time. (Useful for ajax-heavy requests).
      *
      * @throws Exception
-     * @return Boolean Returns FALSE if a CSRF attack is detected, TRUE otherwise.
+     * @return bool Returns FALSE if a CSRF attack is detected, TRUE otherwise.
      */
-    public function check($key, $origin, $throwException = false, $time_span = null, $multiple = false)
-    {
-
+    public function check(
+        string $key,
+        array $origin,
+        bool $throwException = false,
+        ?int $time_span = null,
+        bool $multiple = false
+    ): bool {
         $this->isCsfrMissing($key, $throwException);
         $this->isFormTokenSet($origin, $key, $throwException);
 
@@ -54,7 +60,7 @@ class Nocsrf
         }
 
         $this->isHashOkay($hash, $throwException);
-        $this->doestokenMatch($origin, $key, $hash, $throwException);
+        $this->doesTokenMatch($origin, $key, $hash, $throwException);
         $this->isTokenExpired($time_span, $hash, $throwException);
 
         if ($this->noError === false) {
@@ -65,8 +71,9 @@ class Nocsrf
 
     /**
      * Adds extra user agent and remote_address checks to CSRF protections.
+     * @return void
      */
-    public function enableOriginCheck()
+    public function enableOriginCheck(): void
     {
         $this->doOriginCheck = true;
     }
@@ -96,8 +103,8 @@ class Nocsrf
     /**
      * Generates a random string of given $length.
      *
-     * @param Integer $length The string length.
-     * @return String The randomly generated string.
+     * @param int $length The string length.
+     * @return string The randomly generated string.
      */
     protected function randomString(int $length): string
     {
@@ -106,7 +113,7 @@ class Nocsrf
 
         $string = '';
         for ($i = 0; $i < $length; ++$i) {
-            $string .= $seed[intval(mt_rand(0.0, $max))];
+            $string .= $seed[intval(mt_rand(0, $max))];
         }
         return $string;
     }
@@ -114,9 +121,10 @@ class Nocsrf
     /**
      * @param mixed $key
      * @param bool $throwException
+     * @return void
      * @throws Exception
      */
-    protected function isCsfrMissing($key, $throwException)
+    protected function isCsfrMissing($key, bool $throwException): void
     {
         if (!isset($_SESSION['csrf_' . $key])) {
             $this->noError = $this->returnOrException($throwException, 'Missing CSRF session token.');
@@ -124,12 +132,13 @@ class Nocsrf
     }
 
     /**
-     * @param string $origin
+     * @param array $origin
      * @param mixed $key
      * @param bool $throwException
+     * @return void
      * @throws Exception
      */
-    protected function isFormTokenSet($origin, $key, $throwException)
+    protected function isFormTokenSet(array $origin, $key, bool $throwException): void
     {
         if (!isset($origin[$key])) {
             $this->noError = $this->returnOrException($throwException, 'Missing CSRF form token.');
@@ -139,9 +148,10 @@ class Nocsrf
     /**
      * @param string $hash
      * @param bool $throwException
+     * @return void
      * @throws Exception
      */
-    protected function isHashOkay($hash, $throwException)
+    protected function isHashOkay(string $hash, bool $throwException): void
     {
         // Origin checks
         if (
@@ -156,13 +166,14 @@ class Nocsrf
     }
 
     /**
-     * @param Mixed $origin
+     * @param array $origin
      * @param mixed $key
      * @param string $hash
      * @param bool $throwException
+     * @return void
      * @throws Exception
      */
-    protected function doestokenMatch($origin, $key, $hash, $throwException)
+    protected function doesTokenMatch(array $origin, $key, string $hash, bool $throwException): void
     {
         // Check if session token matches form token
         if ($origin[$key] != $hash) {
@@ -174,14 +185,14 @@ class Nocsrf
      * @param integer|null $time_span
      * @param string $hash
      * @param bool $throwException
+     * @return void
      * @throws Exception
      */
-    protected function isTokenExpired($time_span, $hash, $throwException)
+    protected function isTokenExpired(?int $time_span, string $hash, bool $throwException): void
     {
         // Check for token expiration
         if (
             $time_span !== null &&
-            is_int($time_span) &&
             intval(substr(base64_decode($hash), 0, 10)) + $time_span < time()
         ) {
             $this->noError = $this->returnOrException($throwException, 'CSRF token has expired.');
