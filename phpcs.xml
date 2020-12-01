@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
+<ruleset name="Nocsrf">
+	<description>Nocsrf</description>
+	<rule ref="PSR12">
+	</rule>
+</ruleset>
